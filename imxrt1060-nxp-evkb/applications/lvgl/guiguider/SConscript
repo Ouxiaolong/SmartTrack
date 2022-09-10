@@ -1,0 +1,25 @@
+from building import *
+
+cwd = GetCurrentDir()
+group = []
+src = []
+CPPPATH =[]
+
+src += Glob(cwd + '/ui/*.c')
+src += Glob(cwd + '/ui/lvgl_ui/*.c')
+src += Glob(cwd + '/ui/lvgl_ui/images/*.c')
+src += Glob(cwd + '/ui/lvgl_ui/guider_fonts/*.c')
+src += Glob(cwd + '/ui/lvgl_ui/guider_customer_fonts/*.c')
+CPPPATH += [cwd+'/ui']
+CPPPATH += [cwd+'/ui/lvgl_ui']
+CPPPATH += [cwd+'/ui/lvgl_ui/images']
+CPPPATH += [cwd+'/ui/lvgl_ui/guider_fonts']
+CPPPATH += [cwd+'/ui/lvgl_ui/guider_customer_fonts']
+
+if GetConfigValue('PKG_LVGL_VER_NUM') == '0x08020':
+    src += Glob(cwd + '/legacy/*.c')
+    CPPPATH += [cwd+'/legacy']
+
+group = group + DefineGroup('LVGL-GUIGuider', src, depend = ['BSP_USING_LVGL', 'BSP_USING_NXP_GUIGUIDER'], CPPPATH = CPPPATH)
+
+Return('group')
